@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>蛊真人</title>
+<style>
+:root{
+--bg:#161823;--bg2:#1b1d2e;--bg3:#22253a;
+--card:#1e2136;--card2:#262a45;--card3:#2c3050;
+--border:rgba(93,96,108,.22);--border2:rgba(93,96,108,.38);
+--ac:#fbedb0;--ac2:#d4c488;--ac3:#fff4d0;
+--gy:#5d606c;--gy2:#7a7d8c;--gy3:#3e4150;
+--red:#e06060;--green:#60c890;--blue:#6898d8;--purple:#9880d0;
+--tx:#d8d4c8;--tx2:#8a8898;--tx3:#5d606c;
+--gl:rgba(251,237,176,.04);--gl2:rgba(251,237,176,.08);--gl3:rgba(251,237,176,.12);
+--gb:rgba(251,237,176,.13);--gb2:rgba(251,237,176,.22)
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:#0e0f18;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif}
+#app{width:100%;max-width:420px;height:100dvh;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:var(--bg)}
+
+.hdr{flex-shrink:0;padding:14px 16px 8px}
+.hdr-r{display:flex;align-items:center;justify-content:space-between}
+.hdr-t{font-size:17px;font-weight:800;color:var(--ac);letter-spacing:4px;text-shadow:0 0 1px rgba(251,237,176,.8),0 0 8px rgba(251,237,176,.15),0 1px 0 rgba(0,0,0,.5)}
+.hdr-i{display:flex;gap:6px}
+.hdr-i span{font-size:9px;color:var(--tx2);background:var(--gl);border:1px solid var(--gb);padding:2px 10px;border-radius:20px}
+.hdr-s{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.hdr-s span{font-size:9px;padding:3px 10px;border-radius:20px;background:var(--gl);border:1px solid var(--gb);letter-spacing:.5px}
+.sc1{color:var(--ac)}.sc2{color:var(--green)}.sc3{color:var(--blue)}.sc4{color:var(--purple)}
+
+.tabs{flex-shrink:0;display:flex;gap:6px;padding:6px 12px;flex-wrap:wrap}
+.tabs button{padding:6px 12px;font-size:10px;color:var(--tx3);background:var(--gl);border:1px solid var(--gb);border-radius:20px;cursor:pointer;letter-spacing:1px;transition:all .2s}
+.tabs button.on{color:var(--ac);background:var(--gl3);border-color:var(--gb2);box-shadow:0 0 12px rgba(251,237,176,.06)}
+
+.bd{flex:1;overflow-y:auto;padding:8px 12px;-webkit-overflow-scrolling:touch}
+.bd::-webkit-scrollbar{width:0}
+.pg{display:none}.pg.on{display:block}
+
+.msg{margin-bottom:10px;display:flex;flex-direction:column}
+.msg.sys{align-items:center}
+.msg.sys .mb{background:var(--gl);color:var(--ac);font-size:10px;padding:4px 16px;border-radius:20px;text-align:center;letter-spacing:1px;border:1px solid var(--gb)}
+.msg.nar{align-items:flex-start}
+.msg.nar .mb{background:var(--card);color:var(--tx);border:1px solid var(--border);border-radius:4px 18px 18px 18px;line-height:1.85;padding:10px 14px;font-size:12px}
+.msg.err{align-items:flex-start}
+.msg.err .mb{background:rgba(224,96,96,.06);color:#e0a090;border:1px solid rgba(224,96,96,.18);border-radius:4px 18px 18px 18px;line-height:1.8;padding:10px 14px;font-size:12px}
+.msg.me{align-items:flex-end}
+.msg.me .mb{background:var(--gl2);color:var(--ac2);border:1px solid var(--gb);border-radius:18px 4px 18px 18px;line-height:1.7;padding:10px 14px;font-size:12px}
+.msg.dlt{align-items:center}
+.msg.dlt .mb{background:var(--gl);color:var(--ac);border:1px solid var(--gb);border-radius:16px;font-size:10px;line-height:1.7;padding:8px 16px;text-align:center;max-width:95%}
+.mb{max-width:88%;word-break:break-word}
+.ms{font-size:9px;font-weight:700;margin-bottom:3px;display:block;opacity:.5;letter-spacing:.5px}
+.at2{display:inline-block;font-size:7px;padding:0 5px;border-radius:10px;background:rgba(152,128,208,.12);color:var(--purple);border:1px solid rgba(152,128,208,.2);margin-left:3px;vertical-align:middle}
+
+.opt{width:100%;padding:10px 14px;background:var(--gl);border:1px solid var(--gb);border-radius:16px;color:var(--tx);font-size:11px;cursor:pointer;text-align:left;margin-bottom:6px;line-height:1.5;letter-spacing:.5px;transition:all .15s}
+.opt:active{transform:scale(.97);background:var(--gl3);border-color:var(--gb2);color:var(--ac)}
+.on2{display:inline-block;min-width:18px;height:18px;line-height:18px;text-align:center;background:var(--ac);color:var(--bg);border-radius:10px;font-size:8px;font-weight:700;margin-right:6px}
+
+.crd{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:10px}
+.crd-h{font-size:12px;font-weight:700;color:var(--ac);margin-bottom:8px;letter-spacing:1.5px}
+
+.atr{display:flex;align-items:center;margin-bottom:6px;gap:6px}
+.atr-l{font-size:10px;color:var(--tx2);min-width:36px;text-align:right}
+.atr-b{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.atr-f{height:100%;border-radius:3px;transition:width .5s}
+.fc{background:linear-gradient(90deg,#803030,#c05050)}.fs{background:linear-gradient(90deg,#4a3070,#7858b0)}.fr{background:linear-gradient(90deg,#8a7020,#c8a838)}.fi{background:linear-gradient(90deg,#284870,#5088c0)}.ff{background:linear-gradient(90deg,#205830,#48a868)}
+.atr-v{font-size:10px;color:var(--tx);min-width:20px;text-align:center;font-weight:700}
+.ac2{font-size:8px;font-weight:700;padding:0 4px;border-radius:10px;animation:fc3 3s forwards}
+.ac2.p{color:var(--green);background:rgba(96,200,144,.1)}.ac2.n{color:var(--red);background:rgba(224,96,96,.1)}
+@keyframes fc3{0%,70%{opacity:1}100%{opacity:0}}
+
+.itm{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--gl);border:1px solid var(--gb);border-radius:12px;margin-bottom:5px}
+.itm-i{font-size:14px;flex-shrink:0}.itm-f{flex:1;min-width:0}.itm-n{font-size:11px;font-weight:700;color:var(--tx)}.itm-d{font-size:9px;color:var(--tx2);margin-top:1px}
+.tg{font-size:8px;padding:2px 8px;border-radius:10px;border:1px solid;flex-shrink:0}
+.tg-c{color:var(--tx3);border-color:var(--border2)}.tg-r{color:var(--blue);border-color:rgba(104,152,216,.25)}.tg-l{color:var(--ac);border-color:var(--gb)}
+.emp{text-align:center;color:var(--tx3);font-size:10px;padding:16px;border-radius:12px}
+.npc{background:var(--gl);border:1px solid var(--gb);border-left:3px solid var(--ac2);border-radius:12px;padding:10px;margin-bottom:6px}
+.npc-n{font-size:11px;font-weight:700;color:var(--tx);margin-bottom:3px}.npc-d{font-size:10px;color:var(--tx2);line-height:1.5}
+.npc-t{display:flex;flex-wrap:wrap;gap:3px;margin-top:5px}
+.nt{font-size:8px;padding:2px 8px;border-radius:10px;border:1px solid}
+.nt-a{color:var(--green);border-color:rgba(96,200,144,.3);background:rgba(96,200,144,.05)}.nt-t{color:var(--red);border-color:rgba(224,96,96,.3);background:rgba(224,96,96,.05)}.nt-i{color:var(--ac);border-color:var(--gb);background:var(--gl)}
+.rel{display:flex;align-items:center;gap:8px;padding:8px;background:var(--gl);border:1px solid var(--gb);border-radius:12px;margin-bottom:5px}
+.rel-a{width:32px;height:32px;border-radius:50%;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:14px;border:1px solid var(--border2);flex-shrink:0}
+.rel-f{flex:1;min-width:0}.rel-n{font-size:10px;font-weight:700;color:var(--tx)}.rel-s{font-size:8px;color:var(--ac2);margin-top:1px}
+.rel-v{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;flex-shrink:0;border:1px solid}
+.rel-v.pos{color:var(--green);background:rgba(96,200,144,.06);border-color:rgba(96,200,144,.2)}
+.rel-v.neg{color:var(--red);background:rgba(224,96,96,.06);border-color:rgba(224,96,96,.2)}
+.rel-v.neu{color:var(--tx3);background:var(--gl);border-color:var(--border)}
+
+.btm{flex-shrink:0;padding:8px 12px 12px}
+.btm-r{display:flex;gap:6px;align-items:flex-end}
+.btm textarea{flex:1;background:var(--gl);border:1px solid var(--gb);border-radius:24px;padding:8px 16px;color:var(--tx);font-size:12px;resize:none;height:38px;max-height:70px;outline:none;font-family:inherit;line-height:1.4}
+.btm textarea:focus{border-color:var(--gb2);background:var(--gl2)}
+.btm textarea::placeholder{color:var(--gy)}
+.btm-b{width:38px;height:38px;border-radius:50%;background:var(--ac);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--bg);flex-shrink:0;font-weight:900;box-shadow:0 0 20px rgba(251,237,176,.2)}
+.btm-b:active{transform:scale(.88)}
+
+.sg{margin-bottom:14px}.sg-h{font-size:11px;font-weight:700;color:var(--ac);margin-bottom:6px;letter-spacing:1px}
+.sg input,.sg select{width:100%;background:var(--gl);border:1px solid var(--gb);border-radius:12px;padding:8px 12px;color:var(--tx);font-size:11px;outline:none;font-family:inherit}
+.sg input:focus,.sg select:focus{border-color:var(--gb2)}
+.sg select{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%235d606c'%3E%3Cpath d='M5 7L0 2h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
+.sg select option{background:var(--card);color:var(--tx)}
+.sb{padding:7px 14px;border-radius:12px;border:1px solid var(--gb);background:var(--gl);color:var(--tx2);font-size:10px;cursor:pointer}.sb:active{transform:scale(.94)}
+.sr{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.dv{height:1px;background:var(--border);margin:8px 0}
+
+.spl{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;text-align:center}
+.spl-t{
+font-size:32px;font-weight:900;letter-spacing:8px;
+background:linear-gradient(180deg,#fff8e0 0%,#fbedb0 40%,#d4a848 100%);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+filter:drop-shadow(0 2px 1px rgba(0,0,0,.7)) drop-shadow(0 0 20px rgba(251,237,176,.15));
+margin-bottom:6px;position:relative
+}
+.spl-t::after{content:'蛊真人';position:absolute;inset:0;
+background:linear-gradient(180deg,#fff8e0,#fbedb0,#d4a848);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+filter:blur(8px);opacity:.3;z-index:-1;letter-spacing:8px;font-size:32px;font-weight:900}
+.spl-v{font-size:10px;color:var(--gy);margin-bottom:28px;letter-spacing:2px}
+.spl-d{font-size:12px;color:var(--tx2);line-height:2.2;margin-bottom:32px;max-width:260px;letter-spacing:1px}
+.spl-b{padding:14px 44px;background:var(--gl2);border:1px solid var(--gb2);color:var(--ac);border-radius:28px;font-size:15px;font-weight:800;cursor:pointer;letter-spacing:4px;box-shadow:0 0 25px rgba(251,237,176,.08),inset 0 1px 0 rgba(251,237,176,.1);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.spl-b:active{transform:scale(.94);background:var(--gl3)}
+
+.ldg{display:inline-flex;gap:5px;align-items:center;padding:8px 0}
+.ldg span{width:5px;height:5px;border-radius:50%;background:var(--ac);animation:bk 1.2s infinite}
+.ldg span:nth-child(2){animation-delay:.2s}.ldg span:nth-child(3){animation-delay:.4s}
+@keyframes bk{0%,80%{opacity:.15}40%{opacity:.9}}
+.toast{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%) scale(.85);background:var(--card);color:var(--ac);padding:12px 24px;border-radius:16px;font-size:11px;z-index:999;opacity:0;transition:all .2s;pointer-events:none;border:1px solid var(--gb);text-align:center;max-width:80%;letter-spacing:.5px;box-shadow:0 0 20px rgba(251,237,176,.08)}
+.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.evt{padding:6px 0;font-size:10px;color:var(--tx2);border-bottom:1px solid var(--border);line-height:1.5}
+.evt .ed{color:var(--ac);font-weight:700;margin-right:3px}
+.hl{color:var(--ac);font-weight:700}.rd{color:var(--red)}.gn{color:var(--green)}.bl{color:var(--blue)}.pu{color:var(--purple)}
+</style>
+</head>
+<body>
+<div id="app">
+<div class="hdr" id="topbar" style="display:none">
+<div class="hdr-r"><div class="hdr-t">蛊真人</div><div class="hdr-i"><span id="tInf">第1回合</span><span id="dInf">蛊历4401年</span></div></div>
+<div class="hdr-s"><span class="sc1" id="rYs">&#x1F48E;0</span><span class="sc2" id="rGc">&#x1F41B;0</span><span class="sc3" id="rCl">&#x1F9EA;0</span><span class="sc4" id="rTc">&#x1F4D6;0</span></div>
+</div>
+<div class="tabs" id="tabbar" style="display:none"><button class="on" data-t="story">剧情</button><button data-t="status">状态</button><button data-t="inv">物资</button><button data-t="npc">人物</button><button data-t="rel">关系</button><button data-t="set">设置</button></div>
+<div class="bd" id="mainArea">
+<div id="startScr" class="spl"><div class="spl-t">蛊真人</div><div class="spl-v">同人模拟器</div><div class="spl-d">蛊师为尊 人命如草芥<br>南疆十万大山 山寨林立<br>世间万物皆为棋子<br>没有金手指 只有心计与手段<br>你的每个选择都要付出代价</div><button class="spl-b" id="goBtn">踏入青茅山</button></div>
+<div id="gameUI" style="display:none">
+<div class="pg on" id="pS"><div id="chA"></div><div id="chO"></div></div>
+<div class="pg" id="pSt"><div id="stC"></div></div>
+<div class="pg" id="pI"><div id="ivC"></div></div>
+<div class="pg" id="pN"><div id="npC"></div></div>
+<div class="pg" id="pR"><div id="rlC"></div></div>
+<div class="pg" id="pSet">
+<div class="sg"><div class="sg-h">AI接口</div><input type="text" id="aUrl" placeholder="API地址" value="https://api.openai.com/v1"><input type="password" id="aKey" placeholder="API Key" style="margin-top:6px"><div class="sr"><button class="sb" id="bFM">获取模型</button><button class="sb" id="bTC">测试</button></div><select id="mSel" style="margin-top:6px"><option value="">--选择模型--</option></select></div>
+<div class="sg"><div class="sg-h">存档</div><div class="sr"><button class="sb" id="bSv">存档</button><button class="sb" id="bLd">读档</button><button class="sb" id="bRs">重置</button></div></div>
+</div></div></div>
+<div class="btm" id="btmbar" style="display:none"><div class="btm-r"><textarea id="pInp" placeholder="输入你的行动..." rows="1"></textarea><button class="btm-b" id="bSend">&#9654;</button></div></div>
+<div class="toast" id="toast"></div>
+</div>
+<script>
+var Ri=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
+var Pi=function(a){return a[Ri(0,a.length-1)]};
+var cl=function(v,lo,hi){return Math.max(lo,Math.min(hi,v))};
+function tt(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},1800)}
+var G={turn:1,date:{y:4401,m:1,d:1},p:{name:"",gender:"",age:15,height:"",weight:"",pers:"",app:0,appD:"",birth:"",fam:"",famD:"",prof:"凡人",rep:"无",emo:"孤身一人",prot:"",as:{ys:0,mp:0},tal:"",talD:"",sta:"健康",men:"平静",apt:"?",aptN:"开窍后揭晓",core:{cu:0,st:10,re:5,in:5,rf:5}},inv:{w:[],ma:[],te:[],mi:[]},npcs:[],rels:[],evts:[],hist:[],ai:{url:"",key:"",model:""},busy:false,deltas:null};
+var prev={cu:0,st:10,re:5,in:5,rf:5,ys:0};
+function snap(){prev.cu=G.p.core.cu;prev.st=G.p.core.st;prev.re=G.p.core.re;prev.in=G.p.core.in;prev.rf=G.p.core.rf;prev.ys=G.p.as.ys}
+var NPCS=[{name:"古月方源",role:"旁系子弟",lv:"凡人(伪装)",apt:"丙等",rel:"潜在威胁",tags:["威胁","棋子"],sec:"春秋蝉宿主"},{name:"古月博",role:"族长",lv:"四转高阶",apt:"乙等",rel:"需仰望算计",tags:["庇护","威胁"],sec:"年事已高"},{name:"古月方正",role:"方源之弟",lv:"凡人",apt:"甲等",rel:"投资对象",tags:["投资","棋子"],sec:"心性单纯"},{name:"古月青书",role:"嫡系子弟",lv:"二转",apt:"乙等",rel:"竞争对手",tags:["竞争","威胁"],sec:"忠诚是致命弱点"},{name:"古月赤练",role:"赤脉家老",lv:"三转",apt:"丙等",rel:"可利用",tags:["利用"],sec:"暴躁贪婪"},{name:"古月漠尘",role:"漠脉家老",lv:"三转",apt:"丙等",rel:"需警惕",tags:["威胁"],sec:"阴沉老谋深算"},{name:"花酒行者",role:"魔道巨擘(已故)",lv:"五转(生前)",apt:"?",rel:"传承机缘",tags:["机缘"],sec:"传承是捷径也是杀身之源"}];
+
+function stab(n){var bs=document.querySelectorAll(".tabs button");var mp={story:"pS",status:"pSt",inv:"pI",npc:"pN",rel:"pR",set:"pSet"};for(var i=0;i<bs.length;i++){bs[i].classList.toggle("on",bs[i].getAttribute("data-t")===n)}var ps=document.querySelectorAll(".pg");for(var i=0;i<ps.length;i++){ps[i].classList.remove("on")}document.getElementById(mp[n]).classList.add("on");if(n==="status")rSt();if(n==="inv")rIv();if(n==="npc")rNp();if(n==="rel")rRl();if(n==="story"){setTimeout(function(){document.getElementById("mainArea").scrollTop=999999},60)}}
+function sBot(){document.getElementById("mainArea").scrollTop=999999}
+function aChat(type,sp,txt,ai){var a=document.getElementById("chA");var d=document.createElement("div");d.className="msg "+type;var h='<div class="mb">';if(sp){h+='<span class="ms">'+sp;if(ai){h+='<span class="at2">AI</span>'}h+='</span>'}h+=txt.replace(/\n/g,"<br>")+"</div>";d.innerHTML=h;a.appendChild(d);G.hist.push({t:type,s:sp,x:txt});sBot()}
+function cCh(){document.getElementById("chO").innerHTML=""}
+function aCh(num,txt,fn){var a=document.getElementById("chO");var b=document.createElement("button");b.className="opt";b.innerHTML='<span class="on2">'+num+'</span>'+txt;b.addEventListener("click",fn);a.appendChild(b);sBot()}
+function advDay(n){G.date.d+=n;var md=[0,31,28,31,30,31,30,31,31,30,31,30,31];while(G.date.d>md[G.date.m]){G.date.d-=md[G.date.m];G.date.m++;if(G.date.m>12){G.date.m=1;G.date.y++}}uTop()}
+function uTop(){document.getElementById("tInf").textContent="第"+G.turn+"回合";document.getElementById("dInf").textContent="蛊历"+G.date.y+"年"+G.date.m+"月"+G.date.d+"日";document.getElementById("rYs").textContent="\u{1F48E}"+G.p.as.ys;document.getElementById("rGc").textContent="\u{1F41B}"+G.inv.w.length;document.getElementById("rCl").textContent="\u{1F9EA}"+G.inv.ma.length;document.getElementById("rTc").textContent="\u{1F4D6}"+G.inv.te.length}
+
+function genChar(){var p=G.p;p.gender=Pi(["男","女"]);var s1=["方","赤","漠","青","白","紫","金","冰","炎","云","风","雷","月","星"];var sm=["华","锋","坚","刚","豪","英","杰","轩","毅","雄"];var sf=["华","莲","霜","雪","烟","霞","琳","瑶","薇","芸","灵","慧"];p.name="古月"+Pi(s1)+Pi(p.gender==="男"?sm:sf);p.age=15;p.height=p.gender==="男"?Ri(165,178)+"cm":Ri(155,168)+"cm";p.weight=p.gender==="男"?Ri(52,68)+"kg":Ri(42,55)+"kg";p.pers=Pi(["沉默寡言善于观察","机敏灵活见风使舵","坚韧隐忍不动声色","谨慎多疑步步为营","外柔内刚深藏不露"]);var v=Ri(15,88);p.app=v;if(v>=78){p.appD="面容绝丽 堪称绝色 却也意味着觊觎与危险"}else if(v>=55){p.appD="五官端正 在同辈中颇为出众"}else if(v>=35){p.appD="相貌平平 不会引来注目"}else{p.appD="面容粗糙 是劣势也是伪装"}var r=Math.random();if(r<0.6){p.fam="山寨旁系";p.famD="旁支末系 家底微薄 受嫡系打压";p.as.ys=Ri(3,8);p.prot="无"}else if(r<0.8){p.fam="魔道遗孤";p.famD="父亲是魔道散修已身亡 血脉是隐患";p.as.ys=Ri(2,5);p.prot="无"}else if(r<0.95){p.fam="商队奴隶";p.famD="本是商队奴隶被古月山寨买下";p.as.ys=Ri(1,3);p.prot="古月山寨家老(名义上)"}else{p.fam="异族混血";p.famD="有异族血脉 对瘴气毒物有天然抗性";p.as.ys=Ri(2,4);p.prot="无"}p.birth=Pi(["南疆青茅山古月山寨","南疆青茅山熊家寨","南疆青茅山白家寨"]);if(Math.random()>0.1){p.tal="无";p.talD="并无特殊天赋 一切靠心计争取"}else{var tl=Pi([{n:"重生者的远见",d:"模糊前世记忆偶尔闪现"},{n:"天生魔心",d:"心性冷酷 对痛苦承受力极强"},{n:"资源亲和",d:"对蛊虫与元石有天然直觉"},{n:"百毒不侵之体",d:"体质对绝大多数毒素免疫"}]);p.tal=tl.n;p.talD=tl.d}p.emo="孤身一人";p.men="平静";p.sta="健康";p.prof="凡人";p.apt="?";p.aptN="开窍后揭晓";p.rep="无";G.rels.push({name:"古月方源",stage:0,val:0,desc:"初步观察"});G.rels.push({name:"古月青书",stage:0,val:0,desc:"初步观察"});snap()}
+
+function goGame(){genChar();document.getElementById("startScr").style.display="none";document.getElementById("gameUI").style.display="block";document.getElementById("topbar").style.display="block";document.getElementById("tabbar").style.display="flex";document.getElementById("btmbar").style.display="block";uTop();G.evts.push({d:G.date.y+"."+G.date.m+"."+G.date.d,t:"南疆青茅山 三寨鼎立 暗流涌动"});sendAI("游戏开始 请生成开局剧情")}
+
+function bSP(){var p=G.p;var inv=G.inv;var rA=[];for(var i=0;i<G.rels.length;i++){var r=G.rels[i];rA.push(r.name+",阶段"+r.stage+",利益"+r.val+","+r.desc)}var rStr=rA.join(";")||"无";var nA=[];var aN=NPCS.concat(G.npcs);for(var i=0;i<aN.length;i++){nA.push(aN[i].name+"("+aN[i].role+","+aN[i].lv+")")}var nStr=nA.join(";")||"无";var wA=[];for(var i=0;i<inv.w.length;i++){wA.push(inv.w[i].name+"("+inv.w[i].rank+","+inv.w[i].type+")")}var wStr=wA.join(";")||"无";var mA=[];for(var i=0;i<inv.ma.length;i++){mA.push(inv.ma[i].name)}var mStr=mA.join(";")||"无";var tStr=inv.te.join(";")||"无";var iStr=inv.mi.join(";")||"无";return"你是蛊真人同人模拟器的AI叙事引擎\n核心规则:\n1.绝不无条件满足玩家 突破需审查修为/元石/蛊虫/资质\n2.不能凭空获得东西\n3.失败/受伤/被拒是常态\n4.NPC有自己利益 帮助暗含代价\n5.突破需修为>=30(二转)/60(三转)+元石>=20/50+蛊虫+资质\n6.使用物品需确认拥有\n7.剧情原创\n8.变动必须反映在变动区块\n9.必须包含选项区块给出3个选项\n\n玩家:"+p.name+" "+p.age+"岁"+p.gender+" "+p.fam+" "+p.prof+" 资质"+p.apt+"("+p.aptN+")\n性格:"+p.pers+"\n天赋:"+p.tal+"--"+p.talD+"\n修为"+p.core.cu+"/心计"+p.core.st+"/资源"+p.core.re+"/情报"+p.core.in+"/炼蛊"+p.core.rf+"\n元石:"+p.as.ys+" 功绩点:"+p.as.mp+"\n状态:"+p.sta+" 精神:"+p.men+" 声望:"+p.rep+" 情感:"+p.emo+" 庇护:"+p.prot+"\n家世:"+p.famD+"\n蛊虫:"+wStr+"\n材料:"+mStr+"\n流派:"+tStr+"\n杂物:"+iStr+"\n关系:"+rStr+"\nNPC:"+nStr+"\n第"+G.turn+"回合 蛊历"+G.date.y+"年"+G.date.m+"月"+G.date.d+"日\n\n回复格式:\n【剧情】(300-800字)\n【选项】\n1.(选项1)\n2.(选项2)\n3.(选项3)\n【变动】\n修为:(+N/-N/不变)\n心计:\n资源:\n情报:\n炼蛊:\n元石:\n功绩点:\n状态:\n精神:\n职业:\n声望:\n资质:\n情感:\n庇护:\n关系:(角色名,阶段0-3,利益-10到10,描述;分号分隔;无写无)\n获得蛊虫:(名,转数,类型,描述;无写无)\n失去蛊虫:(名;无写无)\n获得材料:(名,描述;无写无)\n失去材料:(名;无写无)\n获得流派:(名;无写无)\n获得杂物:(名;无写无)\n失去杂物:(名;无写无)\n大事记:(一句话;无写无)\n新NPC:(名,角色,等级,资质,关系,标签,隐秘;无写无)"}
+
+function sendAI(msg){if(G.busy){return}G.busy=true;snap();cCh();aChat("sys","","<div class='ldg'><span></span><span></span><span></span></div>",false);sBot();var ld=document.getElementById("chA").lastChild;var cfg=G.ai;if(!cfg.url||!cfg.key||!cfg.model){ld.remove();G.busy=false;localG(msg);return}var msgs=[{role:"system",content:bSP()}];var rec=G.hist.slice(-10);for(var i=0;i<rec.length;i++){var m=rec[i];msgs.push({role:m.t==="me"?"user":"assistant",content:m.s?"["+m.s+"] "+m.x:m.x})}msgs.push({role:"user",content:msg});fetch(cfg.url+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+cfg.key},body:JSON.stringify({model:cfg.model,messages:msgs,max_tokens:2000,temperature:0.85})}).then(function(r){return r.json()}).then(function(data){ld.remove();if(data.choices&&data.choices[0]){parseAI(data.choices[0].message.content)}else{aChat("err","错误","AI返回异常");localG(msg)}G.busy=false}).catch(function(err){ld.remove();aChat("err","错误","连接失败:"+err.message);localG(msg);G.busy=false})}
+
+function parseAI(raw){var pM=raw.match(/【剧情】([\s\S]*?)(?=【选项】|【变动】|$)/);var cM=raw.match(/【选项】([\s\S]*?)(?=【变动】|【剧情】|$)/);var vM=raw.match(/【变动】([\s\S]*?)$/);if(pM){aChat("nar","旁白",pM[1].trim(),true)}var ch=ech();if(vM){ch=applyV(vM[1].trim())}else{ch=inferV(pM?pM[1].trim():"")}showD(ch);refAll();cCh();var hasOpt=false;if(cM){var ls=cM[1].trim().split("\n");var ci=0;for(var i=0;i<ls.length;i++){var t=ls[i].replace(/^\d+[\.、.)\]]\s*/,"").trim();if(t&&t.length>1){ci++;hasOpt=true;(function(tt,idx){aCh(idx,tt,function(){aChat("me",G.p.name,tt);G.turn++;advDay(1);sendAI("我选择:"+tt)})})(t,ci)}}}if(!hasOpt){aCh(1,"谨慎行事观察局势",function(){aChat("me",G.p.name,"谨慎行事");G.turn++;advDay(1);sendAI("我选择谨慎行事")});aCh(2,"主动出击寻找机会",function(){aChat("me",G.p.name,"主动出击");G.turn++;advDay(1);sendAI("我选择主动出击")});aCh(3,"冒险探索深入打探",function(){aChat("me",G.p.name,"冒险探索");G.turn++;advDay(1);sendAI("我选择冒险探索")})}aCh("+","自由输入",function(){var inp=prompt("输入行动:");if(inp&&inp.trim()){aChat("me",G.p.name,inp.trim());G.turn++;advDay(1);sendAI(inp.trim())}});sBot()}
+
+function ech(){return{attrs:[],sta:"",men:"",prof:"",rep:"",apt:"",emo:"",prot:"",rels:[],ev:"",npcs:[],gw:[],lw:[],gm:[],lm:[],gt:[],gmi:[],lmi:[]}}
+function doDelta(key,name,delta){var p=G.p;var old;if(key==="cu"){old=p.core.cu;p.core.cu=cl(old+delta,0,100);return p.core.cu-old}if(key==="st"){old=p.core.st;p.core.st=cl(old+delta,0,100);return p.core.st-old}if(key==="re"){old=p.core.re;p.core.re=cl(old+delta,0,100);return p.core.re-old}if(key==="in"){old=p.core.in;p.core.in=cl(old+delta,0,100);return p.core.in-old}if(key==="rf"){old=p.core.rf;p.core.rf=cl(old+delta,0,100);return p.core.rf-old}return 0}
+
+function applyV(ct){var p=G.p;var inv=G.inv;var ch=ech();var ls=ct.split("\n");for(var i=0;i<ls.length;i++){var ln=ls[i].trim();if(!ln){continue}var an=[["修为","cu"],["心计","st"],["资源","re"],["情报","in"],["炼蛊","rf"]];for(var j=0;j<an.length;j++){var rg=new RegExp(an[j][0]+"\\s*[：:]*\\s*([+-]?\\d+|不变|无)");var m=ln.match(rg);if(m&&m[1]!=="不变"&&m[1]!=="无"){var d=parseInt(m[1]);if(!isNaN(d)){var a=doDelta(an[j][1],an[j][0],d);if(a!==0){ch.attrs.push({name:an[j][0],delta:a})}}}}var ym=ln.match(/元石\s*[：:]*\s*([+-]?\d+|不变|无)/);if(ym&&ym[1]!=="不变"&&ym[1]!=="无"){var d=parseInt(ym[1]);if(!isNaN(d)){var old=p.as.ys;p.as.ys=Math.max(0,old+d);var a=p.as.ys-old;if(a!==0){ch.attrs.push({name:"元石",delta:a})}}}var mm=ln.match(/功绩点\s*[：:]*\s*([+-]?\d+|不变|无)/);if(mm&&mm[1]!=="不变"&&mm[1]!=="无"){var d=parseInt(mm[1]);if(!isNaN(d)){p.as.mp=Math.max(0,p.as.mp+d)}}var sf=[["状态","sta"],["精神","men"],["职业","prof"],["声望","rep"],["资质","apt"],["情感","emo"],["庇护","prot"]];for(var k=0;k<sf.length;k++){var rg2=new RegExp(sf[k][0]+"\\s*[：:]*\\s*(.+)");var m2=ln.match(rg2);if(m2&&m2[1].trim()&&m2[1].trim()!=="不变"&&m2[1].trim()!=="无"){var v=m2[1].trim();if(sf[k][1]==="sta"){p.sta=v;ch.sta=v}else if(sf[k][1]==="men"){p.men=v;ch.men=v}else if(sf[k][1]==="prof"){p.prof=v;ch.prof=v}else if(sf[k][1]==="rep"){p.rep=v;ch.rep=v}else if(sf[k][1]==="apt"){p.apt=v;p.aptN="已揭晓";ch.apt=v}else if(sf[k][1]==="emo"){p.emo=v;ch.emo=v}else if(sf[k][1]==="prot"){p.prot=v;ch.prot=v}}}var rm=ln.match(/关系\s*[：:]*\s*(.+)/);if(rm&&rm[1].trim()!=="无"){pRels(rm[1].trim(),ch)}var gwm=ln.match(/获得蛊虫\s*[：:]*\s*(.+)/);if(gwm&&gwm[1].trim()!=="无"){pGW(gwm[1].trim(),ch)}var lwm=ln.match(/失去蛊虫\s*[：:]*\s*(.+)/);if(lwm&&lwm[1].trim()!=="无"){pLose(lwm[1].trim(),"w","lw",ch)}var gmm=ln.match(/获得材料\s*[：:]*\s*(.+)/);if(gmm&&gmm[1].trim()!=="无"){pGM(gmm[1].trim(),ch)}var lmm=ln.match(/失去材料\s*[：:]*\s*(.+)/);if(lmm&&lmm[1].trim()!=="无"){pLose(lmm[1].trim(),"ma","lm",ch)}var gtm=ln.match(/获得流派\s*[：:]*\s*(.+)/);if(gtm&&gtm[1].trim()!=="无"){var ns=gtm[1].split(/[;；]/);for(var x=0;x<ns.length;x++){var n=ns[x].trim();if(n&&inv.te.indexOf(n)===-1){inv.te.push(n);ch.gt.push(n)}}}var gim=ln.match(/获得杂物\s*[：:]*\s*(.+)/);if(gim&&gim[1].trim()!=="无"){var ns=gim[1].split(/[;；]/);for(var x=0;x<ns.length;x++){var n=ns[x].trim();if(n){inv.mi.push(n);ch.gmi.push(n)}}}var lim=ln.match(/失去杂物\s*[：:]*\s*(.+)/);if(lim&&lim[1].trim()!=="无"){pLose(lim[1].trim(),"mi","lmi",ch)}var evm=ln.match(/大事记\s*[：:]*\s*(.+)/);if(evm&&evm[1].trim()!=="无"){G.evts.push({d:G.date.y+"."+G.date.m+"."+G.date.d,t:evm[1].trim()});ch.ev=evm[1].trim()}var npm=ln.match(/新NPC\s*[：:]*\s*(.+)/);if(npm&&npm[1].trim()!=="无"){pNewNPC(npm[1].trim(),ch)}}return ch}
+
+function pRels(txt,ch){var es=txt.split(/[;；]/);for(var i=0;i<es.length;i++){var e=es[i].trim();if(!e){continue}var ps=e.split(/[,，]/);if(ps.length<2){continue}var nm=ps[0].trim();var sg=ps.length>1?cl(parseInt(ps[1])||0,0,3):0;var vl=ps.length>2?cl(parseInt(ps[2])||0,-10,10):0;var dc=ps.length>3?ps[3].trim():"";if(!nm){continue}var ex=-1;for(var j=0;j<G.rels.length;j++){if(G.rels[j].name===nm){ex=j;break}}if(ex>=0){var ov=G.rels[ex].val;G.rels[ex].stage=sg;G.rels[ex].val=vl;if(dc){G.rels[ex].desc=dc}ch.rels.push({name:nm,stage:sg,vd:vl-ov,desc:dc||G.rels[ex].desc,isNew:false})}else{G.rels.push({name:nm,stage:sg,val:vl,desc:dc||"新关系"});ch.rels.push({name:nm,stage:sg,vd:vl,desc:dc||"新关系",isNew:true})}}}
+function pGW(txt,ch){var es=txt.split(/[;；]/);for(var i=0;i<es.length;i++){var e=es[i].trim();if(!e){continue}var ps=e.split(/[,，]/);if(ps.length<3){continue}G.inv.w.push({name:ps[0].trim(),rank:ps[1]?ps[1].trim():"凡蛊",type:ps[2]?ps[2].trim():"未知",desc:ps.length>3?ps[3].trim():""});ch.gw.push(ps[0].trim())}}
+function pGM(txt,ch){var es=txt.split(/[;；]/);for(var i=0;i<es.length;i++){var e=es[i].trim();if(!e){continue}var ps=e.split(/[,，]/);G.inv.ma.push({name:ps[0].trim(),desc:ps.length>1?ps[1].trim():""});ch.gm.push(ps[0].trim())}}
+function pLose(txt,ik,ck,ch){var ns=txt.split(/[;；，,]/);for(var i=0;i<ns.length;i++){var nm=ns[i].trim();if(!nm){continue}for(var j=0;j<G.inv[ik].length;j++){var it=G.inv[ik][j];if((typeof it==="string"&&it===nm)||(it.name&&it.name===nm)){G.inv[ik].splice(j,1);ch[ck].push(nm);break}}}}
+function pNewNPC(txt,ch){var es=txt.split(/[;；]/);for(var i=0;i<es.length;i++){var e=es[i].trim();if(!e){continue}var f=e.split(/[,，]/);if(f.length<6){continue}G.npcs.push({name:f[0].trim(),role:f[1].trim(),lv:f[2].trim(),apt:f[3].trim(),rel:f[4].trim(),tags:f[5].trim().split(/[、/]/),sec:f.length>6?f[6].trim():"未知"});ch.npcs.push(f[0].trim())}}
+
+function inferV(plot){var p=G.p;var ch=ech();if(!plot){return ch}var kw=[["cu",["修炼","吐纳","突破","闭关"]],["st",["算计","谋划","识破","分析"]],["re",["元石","交易","购买","赏赐"]],["in",["情报","打探","消息","秘密","获悉"]],["rf",["炼蛊","蛊方","炼制"]]];var nm={cu:"修为",st:"心计",re:"资源",in:"情报",rf:"炼蛊"};for(var i=0;i<kw.length;i++){var mc=0;for(var j=0;j<kw[i][1].length;j++){if(plot.indexOf(kw[i][1][j])>=0){mc++}}if(mc>0){var d=Math.min(Ri(1,2)*mc,4);var a=doDelta(kw[i][0],nm[kw[i][0]],d);if(a!==0){ch.attrs.push({name:nm[kw[i][0]],delta:a})}}}if(plot.match(/受伤|轻伤|擦伤|流血/)){p.sta="轻伤";ch.sta="轻伤"}if(plot.match(/重伤|断骨|昏厥/)){p.sta="重伤";ch.sta="重伤"}if(plot.match(/疲惫|疲倦/)){p.sta="疲惫";ch.sta="疲惫"}if(plot.match(/警觉|警惕/)){p.men="警觉";ch.men="警觉"}if(plot.match(/焦虑|不安/)){p.men="焦虑";ch.men="焦虑"}if(plot.match(/冷静|镇定/)){p.men="冷静";ch.men="冷静"}if(plot.match(/开窍成功|成为蛊师|一转蛊师/)&&p.prof==="凡人"){p.prof="一转蛊师";ch.prof="一转蛊师"}var am=plot.match(/(甲|乙|丙|丁)等资质/);if(am&&p.apt==="?"){p.apt=am[1]+"等";p.aptN="已揭晓";ch.apt=p.apt}var aN=NPCS.concat(G.npcs);for(var i=0;i<aN.length;i++){if(plot.indexOf(aN[i].name)>=0){var found=false;for(var j=0;j<G.rels.length;j++){if(G.rels[j].name===aN[i].name){found=true;break}}if(!found){G.rels.push({name:aN[i].name,stage:0,val:0,desc:"初次接触"});ch.rels.push({name:aN[i].name,stage:0,vd:0,desc:"初次接触",isNew:true})}}}if(ch.attrs.length){G.evts.push({d:G.date.y+"."+G.date.m+"."+G.date.d,t:p.name+"经历变故"});ch.ev=p.name+"经历变故"}return ch}
+
+function showD(ch){var ps=[];for(var i=0;i<ch.attrs.length;i++){var a=ch.attrs[i];ps.push('<span class="'+(a.delta>0?"gn":"rd")+'">'+a.name+" "+(a.delta>0?"+":"")+a.delta+"</span>")}if(ch.sta){ps.push('<span class="rd">状态:'+ch.sta+"</span>")}if(ch.men){ps.push('<span class="bl">精神:'+ch.men+"</span>")}if(ch.prof){ps.push('<span class="hl">职业:'+ch.prof+"</span>")}if(ch.rep){ps.push('<span class="hl">声望:'+ch.rep+"</span>")}if(ch.apt){ps.push('<span class="pu">资质:'+ch.apt+"</span>")}if(ch.emo){ps.push('<span class="bl">情感:'+ch.emo+"</span>")}if(ch.prot){ps.push('<span class="hl">庇护:'+ch.prot+"</span>")}for(var i=0;i<ch.rels.length;i++){var r=ch.rels[i];ps.push((r.isNew?"NEW":"UPD")+" "+r.name+" "+(r.vd>0?"+"+r.vd:r.vd<0?""+r.vd:"0"))}for(var i=0;i<ch.gw.length;i++){ps.push('<span class="gn">+蛊虫:'+ch.gw[i]+"</span>")}for(var i=0;i<ch.lw.length;i++){ps.push('<span class="rd">-蛊虫:'+ch.lw[i]+"</span>")}for(var i=0;i<ch.gm.length;i++){ps.push('<span class="gn">+材料:'+ch.gm[i]+"</span>")}for(var i=0;i<ch.lm.length;i++){ps.push('<span class="rd">-材料:'+ch.lm[i]+"</span>")}for(var i=0;i<ch.gt.length;i++){ps.push('<span class="pu">+流派:'+ch.gt[i]+"</span>")}for(var i=0;i<ch.gmi.length;i++){ps.push('<span class="gn">+物品:'+ch.gmi[i]+"</span>")}for(var i=0;i<ch.lmi.length;i++){ps.push('<span class="rd">-物品:'+ch.lmi[i]+"</span>")}for(var i=0;i<ch.npcs.length;i++){ps.push('<span class="pu">新:'+ch.npcs[i]+"</span>")}if(ch.ev){ps.push('<span class="hl">>>>'+ch.ev+"</span>")}if(ps.length){aChat("dlt","本回合变动",ps.join("&nbsp;·&nbsp;"),false)}}
+
+function refAll(){var d={cu:G.p.core.cu-prev.cu,st:G.p.core.st-prev.st,re:G.p.core.re-prev.re,in:G.p.core.in-prev.in,rf:G.p.core.rf-prev.rf,ys:G.p.as.ys-prev.ys};G.deltas=d;uTop();var at=document.querySelector(".tabs button.on");if(at){var t=at.getAttribute("data-t");if(t==="status"){rSt()}if(t==="inv"){rIv()}if(t==="npc"){rNp()}if(t==="rel"){rRl()}}}
+
+function rSt(){var p=G.p;var c=p.core;var d=G.deltas||{};function cg(k){if(!d[k]||d[k]===0){return""}return '<span class="ac2 '+(d[k]>0?"p":"n")+'">'+(d[k]>0?"+":"")+d[k]+"</span>"}var evH="";if(G.evts.length){var evs=G.evts.slice(-6).reverse();for(var i=0;i<evs.length;i++){evH+='<div class="evt"><span class="ed">['+evs[i].d+"]</span>"+evs[i].t+"</div>"}}else{evH='<div class="emp">暂无</div>'}var upd="";for(var k in d){if(d[k]&&d[k]!==0){upd=' ·<span style="font-size:9px;color:var(--green)">已更新</span>';break}}var h=[];h.push('<div class="crd"><div class="crd-h">基础信息'+upd+'</div>');h.push('<div style="font-size:11px;color:var(--tx2);line-height:1.9">');h.push('<span class="hl">'+p.name+'</span> '+p.gender+" "+p.age+"岁<br>");h.push("身高:"+p.height+" 体重:"+p.weight+"<br>性格:"+p.pers+"<br>");h.push("容貌:<span class=hl>"+p.app+"</span>/100 "+p.appD+"<br>出生:"+p.birth+"<br>");h.push("家世:<span class=hl>"+p.fam+"</span> "+p.famD+"<br>");h.push("职业:<span class=hl>"+p.prof+"</span> 声望:<span class=hl>"+p.rep+"</span><br>");h.push("情感:"+p.emo+" 庇护:"+(p.prot||"无")+"<br>");h.push("天赋:<span class=pu>"+p.tal+"</span> "+p.talD+"<br>");h.push("状态:<span class=gn>"+p.sta+"</span> 精神:<span class=bl>"+p.men+"</span><br>");h.push("资质:<span class=hl>"+p.apt+"</span>("+p.aptN+")<br>");h.push("功绩点:<span class=hl>"+p.as.mp+"</span></div></div>");h.push('<div class="crd"><div class="crd-h">核心属性</div>');h.push('<div class="atr"><span class="atr-l">修为</span><div class="atr-b"><div class="atr-f fc" style="width:'+c.cu+'%"></div></div><span class="atr-v">'+c.cu+"</span>"+cg("cu")+"</div>");h.push('<div class="atr"><span class="atr-l">心计</span><div class="atr-b"><div class="atr-f fs" style="width:'+c.st+'%"></div></div><span class="atr-v">'+c.st+"</span>"+cg("st")+"</div>");h.push('<div class="atr"><span class="atr-l">资源</span><div class="atr-b"><div class="atr-f fr" style="width:'+c.re+'%"></div></div><span class="atr-v">'+c.re+"</span>"+cg("re")+"</div>");h.push('<div class="atr"><span class="atr-l">情报</span><div class="atr-b"><div class="atr-f fi" style="width:'+c.in+'%"></div></div><span class="atr-v">'+c.in+"</span>"+cg("in")+"</div>");h.push('<div class="atr"><span class="atr-l">炼蛊</span><div class="atr-b"><div class="atr-f ff" style="width:'+c.rf+'%"></div></div><span class="atr-v">'+c.rf+"</span>"+cg("rf")+"</div>");h.push('<div class="dv"></div><div style="font-size:10px;color:var(--tx2)">元石:<span class=hl>'+p.as.ys+"</span>"+cg("ys")+"</div></div>");h.push('<div class="crd"><div class="crd-h">大事记</div>'+evH+"</div>");document.getElementById("stC").innerHTML=h.join("")}
+
+function rIv(){var inv=G.inv;var p=G.p;var wh="";if(inv.w.length){for(var i=0;i<inv.w.length;i++){var w=inv.w[i];var rc=w.rank.indexOf("五")>=0||w.rank.indexOf("四")>=0?"tg-l":w.rank.indexOf("三")>=0||w.rank.indexOf("二")>=0?"tg-r":"tg-c";wh+='<div class="itm"><span class="itm-i">&#x1F41B;</span><div class="itm-f"><div class="itm-n">'+w.name+"</div><div class=itm-d>"+w.rank+" "+w.type+"</div></div><span class='tg "+rc+"'>"+w.rank+"</span></div>"}}else{wh='<div class="emp">尚无蛊虫</div>'}var mh="";if(inv.ma.length){for(var i=0;i<inv.ma.length;i++){var m=inv.ma[i];mh+='<div class="itm"><span class="itm-i">&#x1F9EA;</span><div class="itm-f"><div class="itm-n">'+m.name+"</div><div class=itm-d>"+(m.desc||"材料")+"</div></div><span class='tg tg-c'>材料</span></div>"}}else{mh='<div class="emp">尚无材料</div>'}var th="";if(inv.te.length){for(var i=0;i<inv.te.length;i++){th+='<div class="itm"><span class="itm-i">&#x1F4D6;</span><div class="itm-f"><div class="itm-n">'+inv.te[i]+"</div><div class=itm-d>流派</div></div><span class='tg tg-r'>流派</span></div>"}}else{th='<div class="emp">尚无流派</div>'}var ih="";if(inv.mi.length){for(var i=0;i<inv.mi.length;i++){ih+='<div class="itm"><span class="itm-i">&#x1F4E6;</span><div class="itm-f"><div class="itm-n">'+inv.mi[i]+"</div></div><span class='tg tg-c'>杂物</span></div>"}}else{ih='<div class="emp">尚无杂物</div>'}var h=[];h.push('<div class="crd"><div class="crd-h">&#x1F41B; 蛊虫('+inv.w.length+")</div>"+wh+"</div>");h.push('<div class="crd"><div class="crd-h">&#x1F9EA; 材料('+inv.ma.length+")</div>"+mh+"</div>");h.push('<div class="crd"><div class="crd-h">&#x1F4D6; 流派('+inv.te.length+")</div>"+th+"</div>");h.push('<div class="crd"><div class="crd-h">&#x1F4E6; 杂物('+inv.mi.length+")</div>"+ih+"</div>");h.push('<div class="crd"><div class="crd-h">&#x1F48E; 货币</div><div style="font-size:11px;color:var(--tx2)">元石:<span class=hl>'+p.as.ys+'</span> 功绩点:<span class=hl>'+p.as.mp+"</span></div></div>");document.getElementById("ivC").innerHTML=h.join("")}
+
+function rNp(){var all=NPCS.concat(G.npcs);var h=['<div class="crd"><div class="crd-h">已知人物</div>'];for(var i=0;i<all.length;i++){var n=all[i];var tgs="";if(n.tags){for(var j=0;j<n.tags.length;j++){var t=n.tags[j];var c=t==="利用"||t==="投资"?"nt-i":t==="威胁"?"nt-t":"nt-a";tgs+='<span class="nt '+c+'">'+t+"</span>"}}h.push('<div class="npc"><div class="npc-n">'+n.name+"</div><div class=npc-d>"+n.role+" "+n.lv+" 资质"+n.apt);h.push('<br>关系:<span class=hl>'+n.rel+'</span><br>隐秘:<span class=rd>'+n.sec+"</span></div><div class=npc-t>"+tgs+"</div></div>")}h.push("</div>");document.getElementById("npC").innerHTML=h.join("")}
+
+function rRl(){if(!G.rels.length){document.getElementById("rlC").innerHTML='<div class="crd"><div class="emp">暂无关系</div></div>';return}var sn=["价值评估","利益交换","深度利用","生死棋子"];var em=["&#x1F441;","&#x1F91D;","&#x1F3AD;","&#x1F480;"];var h=['<div class="crd"><div class="crd-h">关系网 ('+G.rels.length+"人)</div>"];for(var i=0;i<G.rels.length;i++){var r=G.rels[i];var sI=cl(r.stage,0,3);var vc=r.val>0?"pos":r.val<0?"neg":"neu";var vt=r.val>0?"+"+r.val:r.val<0?""+r.val:"0";h.push('<div class="rel"><div class="rel-a">'+em[sI]+'</div><div class="rel-f"><div class="rel-n">'+r.name+'</div><div class="rel-s">阶段'+(sI+1)+":"+sn[sI]+" "+r.desc+'</div></div><div class="rel-v '+vc+'">'+vt+"</div></div>")}h.push("</div>");document.getElementById("rlC").innerHTML=h.join("")}
+
+function localG(msg){var p=G.p;snap();var sc=["山寨中的又一天 晨雾弥漫远处电狼嚎叫 你在旁系居所附近活动","午后阳光被瘴气过滤成惨淡灰白 坊市角落里商贩吆喝 你目前只有"+p.as.ys+"块元石","夜幕降临山寨笼罩在月光与篝火中 你独自走在石板路上","清晨被嘈杂声惊醒 猎兽队在密林中发现蛊师尸体"];aChat("nar","旁白",Pi(sc),false);var ch=inferV(msg+" "+Pi(sc));showD(ch);refAll();cCh();var opts=[{t:"低调行事观察局势",a:[["in",1,"情报"]]},{t:"主动出击寻找机会",a:[["st",1,"心计"],["re",1,"资源"]]},{t:"冒险探索深入打探",a:[["in",2,"情报"]]}];for(var i=0;i<opts.length;i++){(function(o,idx){aCh(idx+1,o.t,function(){aChat("me",G.p.name,o.t);snap();for(var k=0;k<o.a.length;k++){doDelta(o.a[k][0],o.a[k][2],o.a[k][1])}if(o.t.indexOf("冒险")>=0&&Math.random()>0.5){G.p.sta="轻伤";aChat("err","","你在探索中遭遇意外受了轻伤",false)}var ch2=ech();for(var k=0;k<o.a.length;k++){ch2.attrs.push({name:o.a[k][2],delta:o.a[k][1]})}ch2.sta=G.p.sta;ch2.men=G.p.men;showD(ch2);G.turn++;advDay(1);refAll();localG(o.t)})})(opts[i],i+1)}aCh("+","自由输入",function(){var inp=prompt("输入行动:");if(inp&&inp.trim()){aChat("me",G.p.name,inp.trim());G.turn++;advDay(1);localG(inp.trim())}});sBot()}
+
+function fModels(){var url=document.getElementById("aUrl").value.trim();var key=document.getElementById("aKey").value.trim();if(!url||!key){tt("请填写API地址和Key");return}tt("获取模型...");fetch(url+"/models",{headers:{"Authorization":"Bearer "+key}}).then(function(r){return r.json()}).then(function(d){var s=document.getElementById("mSel");s.innerHTML='<option value="">--选择模型--</option>';if(d.data&&Array.isArray(d.data)){for(var i=0;i<d.data.length;i++){var o=document.createElement("option");o.value=d.data[i].id;o.textContent=d.data[i].id;s.appendChild(o)}tt("OK")}else{tt("未获取到")}}).catch(function(e){tt("失败:"+e.message)})}
+function tConn(){var url=document.getElementById("aUrl").value.trim();var key=document.getElementById("aKey").value.trim();var model=document.getElementById("mSel").value;if(!url||!key||!model){tt("请完成配置");return}tt("测试...");fetch(url+"/chat/completions",{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+key},body:JSON.stringify({model:model,messages:[{role:"user",content:"你好"}],max_tokens:50})}).then(function(r){return r.json()}).then(function(d){if(d.choices&&d.choices[0]){G.ai={url:url,key:key,model:model};tt("连接成功")}else{tt("异常")}}).catch(function(e){tt("失败:"+e.message)})}
+function svG(){try{localStorage.setItem("gzr",JSON.stringify(G));tt("存档成功")}catch(e){tt("失败")}}
+function ldG(){try{var d=localStorage.getItem("gzr");if(d){var s=JSON.parse(d);for(var k in s){G[k]=s[k]}uTop();tt("读档成功");document.getElementById("startScr").style.display="none";document.getElementById("gameUI").style.display="block";document.getElementById("topbar").style.display="block";document.getElementById("tabbar").style.display="flex";document.getElementById("btmbar").style.display="block";document.getElementById("chA").innerHTML="";for(var i=0;i<G.hist.length;i++){var m=G.hist[i];aChat(m.t,m.s,m.x,false)}cCh();aCh("+","继续",function(){sendAI("继续剧情")});refAll()}else{tt("无存档")}}catch(e){tt("失败")}}
+function rsG(){if(confirm("确定重置?")){localStorage.removeItem("gzr");location.reload()}}
+
+document.getElementById("goBtn").addEventListener("click",goGame);
+document.getElementById("bSend").addEventListener("click",function(){var el=document.getElementById("pInp");var txt=el.value.trim();if(!txt||G.busy){return}el.value="";el.style.height="38px";aChat("me",G.p.name,txt);G.turn++;advDay(1);sendAI(txt)});
+document.getElementById("pInp").addEventListener("input",function(){this.style.height="38px";this.style.height=Math.min(this.scrollHeight,70)+"px"});
+document.getElementById("pInp").addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();document.getElementById("bSend").click()}});
+document.getElementById("bFM").addEventListener("click",fModels);
+document.getElementById("bTC").addEventListener("click",tConn);
+document.getElementById("bSv").addEventListener("click",svG);
+document.getElementById("bLd").addEventListener("click",ldG);
+document.getElementById("bRs").addEventListener("click",rsG);
+document.getElementById("aUrl").addEventListener("change",function(){G.ai.url=this.value.trim()});
+document.getElementById("aKey").addEventListener("change",function(){G.ai.key=this.value.trim()});
+document.getElementById("mSel").addEventListener("change",function(){G.ai.model=this.value});
+var tbs=document.querySelectorAll(".tabs button");for(var i=0;i<tbs.length;i++){tbs[i].addEventListener("click",function(){stab(this.getAttribute("data-t"))})}
+</script>
+</body>
+</html>
